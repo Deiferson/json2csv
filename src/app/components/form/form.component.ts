@@ -59,4 +59,9 @@ export class FormComponent {
     return true;
   }
 
+  reset(): void {
+    this.json2csvData = '';
+    this.json2csvForm.reset();
+  }
+
 }
