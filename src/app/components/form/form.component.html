@@ -1,0 +1,32 @@
+<form [formGroup]="json2csvForm" novalidate (ngSubmit)="onSubmit()">
+  <mat-card class="shipping-card">
+    <mat-card-header>      
+      <mat-card-actions>
+        <button mat-raised-button color="primary" type="submit">Converter</button>
+        <button mat-raised-button color="warn" type="submit">Limpar</button>
+      </mat-card-actions>
+    </mat-card-header>    
+    <mat-card-content>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <textarea matInput placeholder="JSON" formControlName="json" rows="10"></textarea>
+            <mat-error *ngIf="json2csvForm.controls['json'].hasError('required')">
+              texto json é<strong>obrigatório</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>        
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <textarea matInput placeholder="CSV" formControlName="csv" rows="10"></textarea>
+            <mat-error *ngIf="json2csvForm.controls['csv'].hasError('required')">
+              First name is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>        
+      </div>
+    </mat-card-content>    
+  </mat-card>
+</form>
