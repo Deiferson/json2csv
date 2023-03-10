@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { CsvTableService } from 'src/app/csv-table.service';
 
 @Component({
   selector: 'app-form',
@@ -14,7 +15,7 @@ export class FormComponent {
     csv: ''
   });  
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private csvTable: CsvTableService) {}
 
   onSubmit(): void {
     this.json2csvData = this.json2csvForm.value
@@ -22,7 +23,7 @@ export class FormComponent {
     if(this.isJson(this.json2csvData.json)){
 
         let data = JSON.parse(this.json2csvData.json);
-        console.log(data)
+
         let fields:any = []
 
         if (Array.isArray(data)) {
@@ -48,6 +49,8 @@ export class FormComponent {
           csv: csv
         });
 
+        this.csvTable.setData(fields,data);
+        console.log(this.csvTable.getData())
     }else
       alert("ERRO: Json Inválido!")
 
@@ -65,6 +68,7 @@ export class FormComponent {
   reset(): void {
     this.json2csvData = '';
     this.json2csvForm.reset();
+    this.csvTable.reset();
   }
 
   copy(element: string): void {

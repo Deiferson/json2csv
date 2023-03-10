@@ -3,6 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
+import { CsvTableService } from 'src/app/csv-table.service';
 
 // TODO: Replace this with your own data model type
 export interface TableItem {
@@ -11,6 +12,7 @@ export interface TableItem {
   teste: number,
   t1: number
 }
+
 
 // TODO: replace this with real data from your application
 const EXAMPLE_DATA: TableItem[] = [
@@ -25,21 +27,24 @@ const EXAMPLE_DATA: TableItem[] = [
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class TableDataSource extends DataSource<TableItem> {
-  data: TableItem[] = EXAMPLE_DATA;
+
+export class TableDataSource extends DataSource<any> {
+  header: any = this.csvTable.getHeader();
+  data: any = this.csvTable.getData();
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
 
-  constructor() {
+  constructor(public csvTable: CsvTableService) {
     super();
   }
+
 
   /**
    * Connect this data source to the table. The table will only update when
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
-  connect(): Observable<TableItem[]> {
+  connect(): Observable<any[]> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
@@ -62,7 +67,7 @@ export class TableDataSource extends DataSource<TableItem> {
    * Paginate the data (client-side). If you're using server-side pagination,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getPagedData(data: TableItem[]): TableItem[] {
+  private getPagedData(data: any[]): any[] {
     if (this.paginator) {
       const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
       return data.splice(startIndex, this.paginator.pageSize);
@@ -75,7 +80,7 @@ export class TableDataSource extends DataSource<TableItem> {
    * Sort the data (client-side). If you're using server-side sorting,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getSortedData(data: TableItem[]): TableItem[] {
+  private getSortedData(data: any[]): any[] {
     if (!this.sort || !this.sort.active || this.sort.direction === '') {
       return data;
     }
@@ -94,3 +99,5 @@ export class TableDataSource extends DataSource<TableItem> {
 function compare(a: string | number, b: string | number, isAsc: boolean): number {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
+
+

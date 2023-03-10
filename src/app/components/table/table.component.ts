@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
+import { CsvTableService } from 'src/app/csv-table.service';
 import { TableDataSource, TableItem } from './table-datasource';
 
 @Component({
@@ -18,18 +19,17 @@ export class TableComponent implements AfterViewInit, OnInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<TableItem>;
+  @ViewChild(MatTable) table!: MatTable<any>;
   dataSource: TableDataSource;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns: any = [];
 
-  constructor(private fb: FormBuilder) {
-    this.dataSource = new TableDataSource();
-    
+  constructor(private fb: FormBuilder, private csvTable: CsvTableService ) {
+    this.dataSource = new TableDataSource(csvTable);    
   }
   ngOnInit(): void {
-    this.displayedColumns= ['id', 'name','teste','t1']
+    this.displayedColumns= this.dataSource.header;
 
     this.searchForm.valueChanges.subscribe(changes => {
       alert(changes.search)
