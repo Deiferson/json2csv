@@ -21,17 +21,20 @@ export class FormComponent {
 
     if(this.isJson(this.json2csvData.json)){
 
-        const data = JSON.parse(this.json2csvData.json);
-
+        let data = JSON.parse(this.json2csvData.json);
+        console.log(data)
         let fields:any = []
-        
-        if(Array.isArray(data)){
-          console.log(data.length)
+
+        if (Array.isArray(data)) {
+          console.log(data.length);
+          fields = Object.keys(data[0]);
+        } else {
+          data = Array.from(data);
+          console.log(data)
           fields = Object.keys(data[0]);
         }
-        else{
-          fields = Object.keys(data);
-        }
+
+        fields = Object.keys(data[0]);
 
         const csvBody = data.map((row:any) => {
           return fields.map((column:any) => {
@@ -64,4 +67,24 @@ export class FormComponent {
     this.json2csvForm.reset();
   }
 
+  copy(element: string): void {
+
+    let text:string = "";
+
+    if(this.json2csvData){
+      if(element == "json")
+        text = this.json2csvData.json
+      else
+      text = this.json2csvData.csv
+    }
+    else
+      text = "";
+
+    const elementoTemporario = document.createElement("textarea");
+    elementoTemporario.value = text;
+    document.body.appendChild(elementoTemporario);
+    elementoTemporario.select();
+    document.execCommand("copy");
+    document.body.removeChild(elementoTemporario);
+  }
 }
