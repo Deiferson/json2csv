@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CsvTableService } from 'src/app/csv-table.service';
 
 @Component({
@@ -15,7 +16,9 @@ export class FormComponent {
     csv: ''
   });  
 
-  constructor(private fb: FormBuilder, private csvTable: CsvTableService) {}
+  constructor(private fb: FormBuilder, 
+    private csvTable: CsvTableService,
+    private snackBar: MatSnackBar) {}
 
   onSubmit(): void {
     this.json2csvData = this.json2csvForm.value
@@ -52,7 +55,7 @@ export class FormComponent {
         this.csvTable.setData(fields,data);
         console.log(this.csvTable.getData())
     }else
-      alert("ERRO: Json Inválido!")
+      this.showMsg("ERRO: Json Inválido!");
 
   }
 
@@ -90,5 +93,14 @@ export class FormComponent {
     elementoTemporario.select();
     document.execCommand("copy");
     document.body.removeChild(elementoTemporario);
+  }
+
+  showMsg(msg: string): void{
+    this.snackBar.open(msg, 'X', {
+      duration: 3000,
+      horizontalPosition: "right",
+      verticalPosition: "top",
+      panelClass: ['msg-success']
+    })
   }
 }
