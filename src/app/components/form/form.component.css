@@ -25,3 +25,14 @@
 .col:last-child {
   margin-right: 0;
 }
+
+
+.msg-success {
+  background-color: #28a745;
+  color: #FFF;
+}
+
+.msg-dangger {
+  background-color: #a72839;
+  color: #FFF;
+}

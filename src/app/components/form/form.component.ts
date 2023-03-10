@@ -13,7 +13,8 @@ export class FormComponent {
 
   json2csvForm = this.fb.group({
     json: ['[{"id": 1, "Name": "teste"}]', Validators.required],
-    csv: ''
+    csv: '',
+    separator: '#'
   });  
 
   constructor(private fb: FormBuilder, 
@@ -22,6 +23,7 @@ export class FormComponent {
 
   onSubmit(): void {
     this.json2csvData = this.json2csvForm.value
+    let s = this.json2csvData.separator
 
     if(this.isJson(this.json2csvData.json)){
 
@@ -43,10 +45,10 @@ export class FormComponent {
         const csvBody = data.map((row:any) => {
           return fields.map((column:any) => {
             return row[column];
-          }).join(',');
+          }).join(s);
         });
         
-        const csv = fields.join(',') + '\n' + csvBody.join('\n');
+        const csv = fields.join(s) + '\n' + csvBody.join('\n');
 
         this.json2csvForm.patchValue({
           csv: csv
